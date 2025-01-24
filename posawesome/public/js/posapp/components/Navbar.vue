@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <v-app-bar app height="40" class="elevation-2">
+    <v-app-bar app height="50" class="elevation-2">
       <v-app-bar-nav-icon
         @click.stop="drawer = !drawer"
         class="grey--text"
@@ -22,6 +22,9 @@
       </v-toolbar-title>
 
       <v-spacer></v-spacer>
+
+      <PriceList></PriceList>
+
       <v-btn style="cursor: unset" text color="primary">
         <span right>{{ pos_profile.name }}</span>
       </v-btn>
@@ -139,9 +142,12 @@
 
 <script>
 import { evntBus } from '../bus';
-
+import PriceList from './pos/PriceList.vue';
 export default {
   // components: {MyPopup},
+  components: {
+    PriceList, // Register the component
+  },
   data() {
     return {
       drawer: false,

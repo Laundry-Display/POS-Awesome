@@ -57,7 +57,7 @@
     </div>
   </div>
 </template>
-
+ 
 <script>
 import { evntBus } from '../../bus';
 import UpdateCustomer from './UpdateCustomer.vue';
@@ -91,7 +91,11 @@ export default {
         callback: function (r) {
           if (r.message) {
             vm.customers = r.message;
-            console.info('loadCustomers');
+
+            //custom
+            localStorage.setItem('price_list', '');
+            //end 
+            
             if (vm.pos_profile.posa_local_storage) {
               localStorage.setItem('customer_storage', '');
               localStorage.setItem(

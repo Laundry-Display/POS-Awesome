@@ -189,6 +189,7 @@ export default {
     appliedCouponsCount: 0,
     customer_price_list: null,
     customer: null,
+    price_list: null,
     new_line: false,
     qty: 1,
   }),
@@ -204,11 +205,19 @@ export default {
     customer() {
       this.get_items();
     },
+
+    //custom
+    price_list(){
+      localStorage.setItem('price_list', this.price_list);
+      this.get_items();
+    },
+    //end
+
     new_line() {
       evntBus.$emit("set_new_line", this.new_line);
     },
   },
-
+ 
   methods: {
     show_offers() {
       evntBus.$emit("show_offers", "true");
@@ -241,11 +250,15 @@ export default {
         evntBus.$emit("set_all_items", vm.items);
         vm.loading = false;
       }
+
+      //custom
+      let price_list = this.price_list || vm.customer_price_list
+
       frappe.call({
         method: "posawesome.posawesome.api.posapp.get_items",
         args: {
           pos_profile: vm.pos_profile,
-          price_list: vm.customer_price_list,
+          price_list: price_list,
           item_group: gr,
           search_value: sr,
           customer: vm.customer,
@@ -328,6 +341,7 @@ export default {
       return items_headers;
     },
     add_item(item) {
+
       item = { ...item };
       if (item.has_variants) {
         evntBus.$emit("open_variants_model", item, this.items);
@@ -664,6 +678,13 @@ export default {
     evntBus.$on("update_customer_price_list", (data) => {
       this.customer_price_list = data;
     });
+
+    //custom
+    evntBus.$on("update_price_list", (data) => {
+      this.price_list = data
+    });
+    //end 
+
     evntBus.$on("update_customer", (data) => {
       this.customer = data;
     });

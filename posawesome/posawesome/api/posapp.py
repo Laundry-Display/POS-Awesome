@@ -130,6 +130,7 @@ def update_opening_shift_data(data, pos_profile):
 def get_items(
     pos_profile, price_list=None, item_group="", search_value="", customer=None
 ):
+    frappe.log_error("price_list", price_list)
     _pos_profile = json.loads(pos_profile)
     ttl = _pos_profile.get("posa_server_cache_duration")
     if ttl:
@@ -439,7 +440,21 @@ def get_customer_names(pos_profile):
     else:
         return _get_customer_names(pos_profile)
 
-
+@frappe.whitelist()
+def get_price_list(pos_profile):
+    pos_profile = json.loads(pos_profile)
+    
+    price_lists = frappe.db.sql(
+        """
+        SELECT name as price_list
+        FROM `tabPrice List`
+        where custom_show_in_pos = 1
+        ORDER by name ASC
+        """,
+        as_dict=1,
+    )
+    return price_lists
+    
 @frappe.whitelist()
 def get_sales_person_names():
     sales_persons = frappe.get_list(

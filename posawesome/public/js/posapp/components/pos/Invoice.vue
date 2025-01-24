@@ -28,6 +28,8 @@
           cols="9"
           class="pb-2 pr-0"
         >
+          <!-- <PriceList></PriceList>
+          <br /> -->
           <Customer></Customer>
         </v-col>
         <v-col
@@ -35,6 +37,8 @@
           cols="12"
           class="pb-2"
         >
+          <!-- <PriceList></PriceList>
+          <br /> -->
           <Customer></Customer>
         </v-col>
         <v-col v-if="pos_profile.posa_allow_sales_order" cols="3" class="pb-2">
@@ -834,6 +838,10 @@ import { evntBus } from "../../bus";
 import format from "../../format";
 import Customer from "./Customer.vue";
 
+//custom
+import PriceList from "./PriceList.vue";
+//end
+
 export default {
   mixins: [format],
   data() {
@@ -886,6 +894,7 @@ export default {
 
   components: {
     Customer,
+    PriceList //custom
   },
 
   computed: {
@@ -1868,7 +1877,7 @@ export default {
           price_list = customer_group_price_list;
         }
       }
-      return price_list;
+      return localStorage.getItem('price_list') || price_list;
     },
 
     update_price_list() {
